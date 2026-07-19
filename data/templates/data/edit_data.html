@@ -1,0 +1,20 @@
+{% extends 'users/base.html' %}
+{% block title %}Edit Entry - Mental Fitness Coach{% endblock %}
+{% block content %}
+<div class="card">
+    <h2 style="color:#00695c;">Edit - {{ entry.date|date:"F d, Y" }}</h2>
+    <form method="post" novalidate>{% csrf_token %}
+        <div class="row"><div class="col-md-6"><div class="form-group"><label>{{ form.sleep_hours.label }}</label>{{ form.sleep_hours }}</div></div><div class="col-md-6"><div class="form-group"><label>{{ form.sleep_quality.label }}</label>{{ form.sleep_quality }}</div></div></div>
+        <div class="row"><div class="col-md-6"><div class="form-group"><label>{{ form.bp_systolic.label }}</label>{{ form.bp_systolic }}</div></div><div class="col-md-6"><div class="form-group"><label>{{ form.bp_diastolic.label }}</label>{{ form.bp_diastolic }}</div></div></div>
+        <div class="row"><div class="col-md-3"><div class="form-group"><label>{{ form.anxiety_level.label }}</label>{{ form.anxiety_level }}</div></div><div class="col-md-3"><div class="form-group"><label>{{ form.stress_level.label }}</label>{{ form.stress_level }}</div></div><div class="col-md-3"><div class="form-group"><label>{{ form.fatigue_level.label }}</label>{{ form.fatigue_level }}</div></div><div class="col-md-3"><div class="form-group"><label>{{ form.mood_rating.label }}</label>{{ form.mood_rating }}</div></div></div>
+        <div class="form-group"><label class="checkbox-label">{{ form.body_shivering }}<span>{{ form.body_shivering.label }}</span></label></div>
+        <div class="form-group"><label>{{ form.gender_identity.label }}</label>{{ form.gender_identity }}</div>
+        <div class="row"><div class="col-md-3"><div class="form-group"><label>{{ form.irritability_level.label }}</label>{{ form.irritability_level }}</div></div><div class="col-md-3"><div class="form-group"><label>{{ form.appetite_level.label }}</label>{{ form.appetite_level }}</div></div><div class="col-md-3"><div class="form-group"><label>{{ form.anger_attacks.label }}</label>{{ form.anger_attacks }}</div></div><div class="col-md-3"><div class="form-group"><label>{{ form.loneliness_level.label }}</label>{{ form.loneliness_level }}</div></div></div>
+        <div class="form-group"><label class="checkbox-label">{{ form.experienced_discrimination }}<span>{{ form.experienced_discrimination.label }}</span></label></div>
+        <div class="form-group"><label>{{ form.discrimination_details.label }}</label>{{ form.discrimination_details }}</div>
+        <div class="form-group"><label>{{ form.notes.label }}</label>{{ form.notes }}</div>
+        <button type="submit" class="btn" style="width:100%">Update</button>
+    </form>
+    <p style="margin-top:15px"><a href="{% url 'data:history' %}" class="link">Cancel</a></p>
+</div>
+{% endblock %}

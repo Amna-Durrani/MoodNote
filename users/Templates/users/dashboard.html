@@ -1,0 +1,57 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Dashboard - Mental Fitness Coach{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Welcome, {{ user.get_short_name }}!</h2>
+    <p class="text-muted">Your mental fitness dashboard</p>
+
+    <div class="profile-info" style="margin-top: 30px;">
+        <div class="info-item">
+            <strong>Email</strong>
+            {{ user.email }}
+        </div>
+        <div class="info-item">
+            <strong>Full Name</strong>
+            {{ user.get_full_name }}
+        </div>
+        <div class="info-item">
+            <strong>Member Since</strong>
+            {{ user.date_joined|date:"F d, Y" }}
+        </div>
+        <div class="info-item">
+            <strong>Last Login</strong>
+            {{ user.last_login|date:"F d, Y H:i"|default:"Never" }}
+        </div>
+    </div>
+
+    {% if email_usage %}
+    <div style="margin-top: 30px;">
+        <h3>Email Usage Stats</h3>
+        <div class="profile-info" style="margin-top: 15px;">
+            <div class="info-item">
+                <strong>Sign Up Date</strong>
+                {{ email_usage.signed_up_at|date:"F d, Y H:i" }}
+            </div>
+            <div class="info-item">
+                <strong>Total Logins</strong>
+                {{ email_usage.login_count }}
+            </div>
+            <div class="info-item">
+                <strong>Email Used</strong>
+                {% if email_usage.email_used %}Yes{% else %}No{% endif %}
+            </div>
+            <div class="info-item">
+                <strong>Last Used</strong>
+                {{ email_usage.last_used_at|date:"F d, Y H:i"|default:"Never" }}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div style="margin-top: 30px;">
+        <a href="{% url 'change_password' %}" class="btn btn-warning">Change Password</a>
+    </div>
+</div>
+{% endblock %}

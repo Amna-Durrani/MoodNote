@@ -1,0 +1,10 @@
+{% extends 'users/base.html' %}
+{% block title %}Stats - Mental Fitness Coach{% endblock %}
+{% block content %}
+<div class="card">
+    <h2 style="color:#00695c;">Your Stats</h2>
+    <p class="text-muted">Based on {{ count }} entries</p>
+    <div class="profile-info"><div class="info-item"><strong>Avg Sleep</strong>{{ avg_sleep }}h</div><div class="info-item"><strong>Avg Anxiety</strong>{{ avg_anxiety }}/10</div><div class="info-item"><strong>Avg Stress</strong>{{ avg_stress }}/10</div><div class="info-item"><strong>Avg Mood</strong>{{ avg_mood }}/10</div></div>
+    <div style="margin-top:20px;"><a href="{% url 'data:add' %}" class="btn">Add New</a> <a href="{% url 'data:history' %}" class="btn btn-secondary">History</a></div>
+</div>
+{% endblock %}

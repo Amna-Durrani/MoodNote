@@ -1,0 +1,16 @@
+{% extends 'users/base.html' %}
+{% block title %}Details - Mental Fitness Coach{% endblock %}
+{% block content %}
+<div class="card">
+    <h2 style="color:#00695c;">Entry - {{ entry.date|date:"F d, Y" }}</h2>
+    <h3 style="color:#00897b;margin-top:20px;">General</h3>
+    <div class="profile-info"><div class="info-item"><strong>Sleep</strong>{{ entry.sleep_hours }}h ({{ entry.sleep_quality }}/10)</div><div class="info-item"><strong>BP</strong>{{ entry.bp_systolic }}/{{ entry.bp_diastolic }} ({{ entry.bp_status }})</div><div class="info-item"><strong>Anxiety</strong>{{ entry.anxiety_level }}/10</div><div class="info-item"><strong>Stress</strong>{{ entry.stress_level }}/10</div><div class="info-item"><strong>Fatigue</strong>{{ entry.fatigue_level }}/10</div><div class="info-item"><strong>Mood</strong>{{ entry.mood_rating }}/10</div><div class="info-item"><strong>Shivering</strong>{% if entry.body_shivering %}Yes{% else %}No{% endif %}</div><div class="info-item"><strong>Score</strong>{{ entry.wellness_score }}/100</div></div>
+    {% if entry.gender_identity %}
+    <h3 style="color:#00897b;margin-top:20px;">Gender Wellness</h3>
+    <div class="profile-info"><div class="info-item"><strong>Gender</strong>{{ entry.get_gender_identity_display }}</div><div class="info-item"><strong>Irritability</strong>{{ entry.irritability_level }}/10</div><div class="info-item"><strong>Appetite</strong>{{ entry.appetite_level }}/10</div><div class="info-item"><strong>Anger</strong>{{ entry.anger_attacks }}/10</div><div class="info-item"><strong>Loneliness</strong>{{ entry.loneliness_level }}/10</div><div class="info-item"><strong>Discrim.</strong>{% if entry.experienced_discrimination %}Yes{% else %}No{% endif %}</div><div class="info-item"><strong>G-Score</strong>{{ entry.gender_wellness_score|default:"N/A" }}/100</div></div>
+    {% endif %}
+    {% if entry.discrimination_details %}<div style="margin-top:15px;padding:12px;background:#fff3e0;border-radius:8px;"><strong style="color:#e65100;">Discrimination:</strong> {{ entry.discrimination_details }}</div>{% endif %}
+    {% if entry.notes %}<div style="margin-top:15px;padding:12px;background:#f8f9fa;border-radius:8px;"><strong>Notes:</strong> {{ entry.notes }}</div>{% endif %}
+    <div style="margin-top:20px;"><a href="{% url 'data:history' %}" class="btn btn-secondary">Back</a> <a href="{% url 'data:edit' entry.pk %}" class="btn">Edit</a></div>
+</div>
+{% endblock %}

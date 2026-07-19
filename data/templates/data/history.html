@@ -1,0 +1,13 @@
+{% extends 'users/base.html' %}
+{% block title %}History - Mental Fitness Coach{% endblock %}
+{% block content %}
+<div class="card">
+    <h2 style="color:#00695c;">Your Wellness History</h2>
+    <p class="text-muted">Total: {{ total }}</p>
+    <div style="margin-bottom:20px;"><a href="{% url 'data:add' %}" class="btn">+ New</a> <a href="{% url 'data:stats' %}" class="btn btn-secondary">Stats</a></div>
+    {% if entries %}
+    <table><thead><tr><th>Date</th><th>Sleep</th><th>BP</th><th>Anxiety</th><th>Stress</th><th>Mood</th><th>Score</th><th>Gender</th><th>Discrim.</th></tr></thead>
+    <tbody>{% for entry in entries %}<tr><td>{{ entry.date|date:"M d" }}</td><td>{{ entry.sleep_hours }}h</td><td>{{ entry.bp_systolic }}/{{ entry.bp_diastolic }}</td><td>{{ entry.anxiety_level }}</td><td>{{ entry.stress_level }}</td><td>{{ entry.mood_rating }}</td><td><span class="score-badge {% if entry.wellness_score >= 70 %}score-good{% elif entry.wellness_score >= 50 %}score-moderate{% else %}score-poor{% endif %}">{{ entry.wellness_score }}</span></td><td>{% if entry.gender_identity %}{{ entry.get_gender_identity_display }}{% else %}-{% endif %}</td><td>{% if entry.experienced_discrimination %}Yes{% else %}No{% endif %}</td></tr>{% endfor %}</tbody></table>
+    {% else %}<p>No entries. <a href="{% url 'data:add' %}" class="link">Add first</a>.</p>{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Home - Mental Fitness Coach{% endblock %}
+
+{% block content %}
+<div class="card text-center" style="padding: 60px 40px;">
+    <h1 style="font-size: 2.5rem; color: #62a686;">Mental Fitness Coach</h1>
+    <p class="text-muted" style="font-size: 1.2rem; margin: 20px 0;">
+        Take care of your mind. Track your mental wellness journey.
+    </p>
+
+    {% if not user.is_authenticated %}
+        <div style="margin-top: 30px;">
+            <a href="{% url 'signup' %}" class="btn" style="margin-right: 15px;">Get Started</a>
+            <a href="{% url 'login' %}" class="btn btn-secondary">Log In</a>
+        </div>
+    {% else %}
+        <div style="margin-top: 30px;">
+            <a href="{% url 'dashboard' %}" class="btn">Go to Dashboard</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

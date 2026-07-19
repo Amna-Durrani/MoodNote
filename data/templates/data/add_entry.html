@@ -1,0 +1,25 @@
+{% extends 'users/base.html' %}
+{% block title %}Wellness Check - Mental Fitness Coach{% endblock %}
+{% block content %}
+<div class="card">
+    <h2 style="color:#00695c;">Daily Wellness Check-In</h2>
+    <p class="text-muted">{{ today|date:"F d, Y" }}</p>
+    {% if existing %}<div class="alert alert-info">Updating today's entry.</div>{% endif %}
+    <form method="post" novalidate>{% csrf_token %}
+        <h3 style="color:#00897b;margin:25px 0 10px;border-bottom:2px solid #e0f2f1;">General Wellness</h3>
+        <div class="row"><div class="col-md-6"><div class="form-group"><label>{{ form.sleep_hours.label }}</label>{{ form.sleep_hours }}</div></div><div class="col-md-6"><div class="form-group"><label>{{ form.sleep_quality.label }}</label>{{ form.sleep_quality }}<small>{{ form.sleep_quality.help_text }}</small></div></div></div>
+        <div class="row"><div class="col-md-6"><div class="form-group"><label>{{ form.bp_systolic.label }}</label>{{ form.bp_systolic }}</div></div><div class="col-md-6"><div class="form-group"><label>{{ form.bp_diastolic.label }}</label>{{ form.bp_diastolic }}</div></div></div>
+        <div class="row"><div class="col-md-3"><div class="form-group"><label>{{ form.anxiety_level.label }}</label>{{ form.anxiety_level }}<small>{{ form.anxiety_level.help_text }}</small></div></div><div class="col-md-3"><div class="form-group"><label>{{ form.stress_level.label }}</label>{{ form.stress_level }}<small>{{ form.stress_level.help_text }}</small></div></div><div class="col-md-3"><div class="form-group"><label>{{ form.fatigue_level.label }}</label>{{ form.fatigue_level }}<small>{{ form.fatigue_level.help_text }}</small></div></div><div class="col-md-3"><div class="form-group"><label>{{ form.mood_rating.label }}</label>{{ form.mood_rating }}<small>{{ form.mood_rating.help_text }}</small></div></div></div>
+        <div class="form-group"><label class="checkbox-label">{{ form.body_shivering }}<span>{{ form.body_shivering.label }}</span></label></div>
+        <div class="form-group"><label>{{ form.shivering_intensity.label }}</label>{{ form.shivering_intensity }}</div>
+        <h3 style="color:#00897b;margin:25px 0 10px;border-bottom:2px solid #e0f2f1;">Gender Wellness:</h3>
+        <div class="form-group"><label>{{ form.gender_identity.label }}</label>{{ form.gender_identity }}</div>
+        <div class="row"><div class="col-md-3"><div class="form-group"><label>{{ form.irritability_level.label }}</label>{{ form.irritability_level }}<small>{{ form.irritability_level.help_text }}</small></div></div><div class="col-md-3"><div class="form-group"><label>{{ form.appetite_level.label }}</label>{{ form.appetite_level }}<small>{{ form.appetite_level.help_text }}</small></div></div><div class="col-md-3"><div class="form-group"><label>{{ form.anger_attacks.label }}</label>{{ form.anger_attacks }}<small>{{ form.anger_attacks.help_text }}</small></div></div><div class="col-md-3"><div class="form-group"><label>{{ form.loneliness_level.label }}</label>{{ form.loneliness_level }}<small>{{ form.loneliness_level.help_text }}</small></div></div></div>
+        <div class="form-group"><label class="checkbox-label">{{ form.experienced_discrimination }}<span>{{ form.experienced_discrimination.label }}</span></label></div>
+        <div class="form-group"><label>{{ form.discrimination_details.label }}</label>{{ form.discrimination_details }}</div>
+        <h3 style="color:#00897b;margin:25px 0 10px;border-bottom:2px solid #e0f2f1;">Notes</h3>
+        <div class="form-group">{{ form.notes }}</div>
+        <button type="submit" class="btn" style="width:100%">{% if existing %}Update{% else %}Save{% endif %} Entry</button>
+    </form>
+</div>
+{% endblock %}

@@ -21,14 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ==================== SECURITY SETTINGS ====================
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# Generate a new key using: python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
-SECRET_KEY = 'django-insecure-your-secret-key-here-change-in-production'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-your-local-dev-key-change-this')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 # Allowed hosts - add your domain in production
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 
 # ==================== APPLICATION DEFINITION ====================
@@ -42,9 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    # Your custom users app
+    # Your custom apps
     'users',
-    'data'
+    'data',
 ]
 
 MIDDLEWARE = [
@@ -80,19 +79,18 @@ WSGI_APPLICATION = 'mental_fitness_coach.wsgi.application'
 
 # ==================== DATABASE ====================
 
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+# For Render deployment (uses PostgreSQL in production, SQLite locally)
+import dj_database_url
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
+        conn_max_age=600
+    )
 }
 
 
 # ==================== PASSWORD VALIDATION ====================
-
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -115,8 +113,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # ==================== INTERNATIONALIZATION ====================
 
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -127,8 +123,6 @@ USE_TZ = True
 
 
 # ==================== STATIC FILES (CSS, JavaScript, Images) ====================
-
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
 
@@ -148,21 +142,16 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # ==================== DEFAULT PRIMARY KEY FIELD TYPE ====================
 
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = 'django.models.BigAutoField'
 
 
 # ==================== CUSTOM USER MODEL ====================
 
-# Tells Django to use your custom User model from the users app
-
+AUTH_USER_MODEL = 'users.User'
 
 
 # ==================== AUTHENTICATION BACKENDS ====================
-AUTH_USER_MODEL = 'users.User'
-LOGIN_REDIRECT_URL = '/health/add/'
-LOGIN_URL = '/login/'
+
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
@@ -170,58 +159,30 @@ AUTHENTICATION_BACKENDS = [
 
 # ==================== LOGIN / LOGOUT REDIRECTS ====================
 
-# Where to redirect after login
-LOGIN_REDIRECT_URL = '/users/dashboard/'
+LOGIN_REDIRECT_URL = '/health/add/'
 
-# Where to redirect if login is required but user is not logged in
-LOGIN_URL = '/users/login/'
+LOGIN_URL = '/login/'
 
-# Where to redirect after logout
 LOGOUT_REDIRECT_URL = '/users/login/'
 
 
-# ==================== SESSION SETTINGS (Keep Me Logged In) ====================
+# ==================== SESSION SETTINGS ====================
 
-# Default session cookie age: 2 weeks (1209600 seconds)
 SESSION_COOKIE_AGE = 1209600
-
-# Refresh session expiry on every request (extends "Keep me logged in")
 SESSION_SAVE_EVERY_REQUEST = True
-
-# Allow persistent sessions (don't expire when browser closes)
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-
-# Prevent JavaScript access to session cookie
 SESSION_COOKIE_HTTPONLY = True
-
-# Use secure cookies in production (HTTPS only)
-# SESSION_COOKIE_SECURE = True
 
 
 # ==================== CSRF PROTECTION ====================
 
 CSRF_COOKIE_HTTPONLY = True
 
-# Use secure CSRF cookies in production
-# CSRF_COOKIE_SECURE = True
-
 
 # ==================== EMAIL CONFIGURATION ====================
 
-# For development: emails are printed to the console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-# For production (example with Gmail SMTP):
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'your-email@gmail.com'
-# EMAIL_HOST_PASSWORD = 'your-app-password'  # Use app-specific password, not your Gmail password
-# DEFAULT_FROM_EMAIL = 'Mental Fitness Coach <noreply@yourdomain.com>'
-
-# Site URL used in email templates (change to your production domain)
-SITE_URL = 'http://127.0.0.1:8000'
+SITE_URL = os.environ.get('SITE_URL', 'http://127.0.0.1:8000')
 
 
 # ==================== MESSAGE SETTINGS ====================
@@ -237,35 +198,10 @@ MESSAGE_TAGS = {
 }
 
 
-# ==================== SECURITY HEADERS (Enable in Production) ====================
-
-# Enable browser XSS filter
-# SECURE_BROWSER_XSS_FILTER = True
-
-# Prevent MIME type sniffing
-# SECURE_CONTENT_TYPE_NOSNIFF = True
-
-# Prevent clickjacking
-# X_FRAME_OPTIONS = 'DENY'
-
-# Redirect all HTTP to HTTPS
-# SECURE_SSL_REDIRECT = True
-
-# HSTS (HTTP Strict Transport Security)
-# SECURE_HSTS_SECONDS = 31536000  # 1 year
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-# SECURE_HSTS_PRELOAD = True
-
-
-# ==================== LOGGING ====================
-
 # ==================== LOGGING ====================
 
 LOGS_DIR = BASE_DIR / 'logs'
 LOGS_DIR.mkdir(parents=True, exist_ok=True)
-
-
-# Create logs directory if it doesn't exist
 
 LOGGING = {
     'version': 1,
